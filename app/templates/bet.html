@@ -1,0 +1,33 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('.static', filename='css/style.css') }}">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link href="http://fonts.googleapis.com/css?family=Arvo:400,700" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block title %}{{ config.SITENAME }}{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+<div class="container">
+	{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			{% for category, message in messages %}
+			<div class="alert alert-{{ category }}">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>{{ message }}</strong>
+			</div>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+	<h1>{{ team1 }} - {{ team2 }} <small>Matchday {{ matchday }}</small></h1>
+	<form class="form-inline text-center" role="form" action="" method="POST" enctype="login">
+		{{ form.hidden_tag() }}
+		{{ wtf.form_field(form.score1) }} : {{ wtf.form_field(form.score2) }}
+		<button type="submit" class="btn btn-primary" value="name">Submit</button>
+	</form>
+</div>
+{% endblock %}

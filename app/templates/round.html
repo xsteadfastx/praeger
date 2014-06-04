@@ -1,0 +1,64 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('.static', filename='css/style.css') }}">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link href="http://fonts.googleapis.com/css?family=Arvo:400,700" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block title %}{{ config.SITENAME }}{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+<div class="container">
+	{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			{% for category, message in messages %}
+			<div class="alert alert-{{ category }}">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>{{ message }}</strong>
+			</div>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+	<h1>{{ round['round']['title'] }} <small>{{ round['round']['start_at'] }}</small></h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="text-left">Match</th>
+				<th class="text-center">Kickoff</th>
+				<th class="text-center">Your Bet</th>
+				<th class="text-center">Result</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for game in round['games']|sort(attribute='play_at') %}
+			<tr>
+				<td class="text-left">{{ game['team1_title'] }} - {{ game['team2_title'] }}</td>
+				<td class="text-center">{{ get_time(game['play_at']) }}</td>
+				{% if get_today() < get_play_at(game['play_at']) %}
+					{% if game['bet_score1'] == None and game['bet_score2'] == None %}
+					<td class="text-center"><a href="/bet/{{ round['round']['pos'] }}-{{ game['team1_key'] }}-{{ game['team2_key'] }}">no bet</a></td>
+					{% else %}
+					<td class="text-center"><a href="/bet/{{ round['round']['pos'] }}-{{ game['team1_key'] }}-{{ game['team2_key'] }}">{{ game['bet_score1'] }} : {{ game['bet_score2'] }}</a></td>
+					{% endif %}
+				{% else %}
+					{% if game['bet_score1'] == None and game['bet_score2'] == None %}
+					<td class="text-center">no bet</td>
+					{% else %}
+					<td class="text-center">{{ game['bet_score1'] }} : {{ game['bet_score2'] }}</td>
+					{% endif %}
+				{% endif %}
+				{% if game['score1'] == None and game['score1'] == None %}
+				<td class="text-center">not played yet</td>
+				{% else %}
+				<td class="text-center">{{ game['score1'] }} : {{ game['score2'] }}</td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+		</tbody>
+	<table>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+import os
+
+
+# name of the site
+SITENAME = 'PRAEGER'
+
+# settings for mongodb
+MONGODB_SETTINGS = {'DB': 'praeger'}
+
+# best made with 'os.urandom(24)'
+SECRET_KEY = 'mysupersweetrandomkey'
