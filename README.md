@@ -3,6 +3,8 @@ PRAEGER
 
 a flask based football betting app. named after the the VfL Wolfsburg Legend [Roy Präger](https://de.wikipedia.org/wiki/Roy_Pr%C3%A4ger).
 
+![logo](praeger.png)
+
 ## Running PRAEGER with Docker
 1. Create MongoDB directory with `sudo mkdir /var/mongodb`
 2. Build the image with `sudo docker.io build -t praeger .`
