@@ -381,7 +381,7 @@ def score():
         round_data = get_round(match.matchday)
         for game in round_data['games']:
             if game['team1_key'] == match.team1 and game['team2_key'] == match.team2:
-                real_score = [game['score1'], game['score1']]
+                real_score = [game['score1'], game['score2']]
             else:
                 pass
         try:
