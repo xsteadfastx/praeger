@@ -97,10 +97,17 @@ def team_key_to_title(code):
 
 def score_check(real_score, bet_score):
     ''' checks realm score and the bet and return the points '''
+    # exact bet return 5 points
     if real_score == bet_score:
         return 5
+    # if tendency right
     elif real_score.index(max(real_score)) == bet_score.index(max(bet_score)):
-        return 3
+        # if goal difference is right return 3 points
+        if abs(real_score[0]-real_score[1]) == abs(bet_score[0]-bet_score[1]):
+            return 3
+        # if just the tendency is right return 1 point
+        else:
+            return 1
     else:
         return 0
 
