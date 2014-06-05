@@ -13,7 +13,7 @@
 {% block content %}
 <div class="container">
 	<h1>{{ config.SITENAME }}</h1>
-	<p style="font-size:450%; color:#5cb85c" class="text-center"><i class="fa fa-globe fa-5x"></i></p>
+	<p class="text-center"><img src="/static/images/praeger.png" alt="praeger"></p>
 	{% with messages = get_flashed_messages(with_categories=true) %}
 		{% if messages %}
 			{% for category, message in messages %}
