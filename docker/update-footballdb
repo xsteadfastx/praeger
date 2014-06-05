@@ -1,0 +1,8 @@
+#!/bin/bash
+cd /opt/footballdb/openmundi/world.db && git pull origin master
+cd /opt/footballdb/openfootball/world-cup && git pull origin master
+cd /opt/footballdb/openfootball/national-teams && git pull origin master
+cd /opt/footballdb/openfootball/build && rake build DATA=worldcup2014
+kill -9 $(pidof /usr/bin/ruby1.9.1 /usr/local/bin/rackup)
+cp /opt/footballdb/openfootball/build/build/football.db /opt/footballdb/api/
+cd /opt/footballdb/api && rackup &
