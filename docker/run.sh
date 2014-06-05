@@ -1,0 +1,1 @@
+sudo docker.io run -itd -p 127.0.0.1:2323:22 -p 127.0.0.1:27017:27017 -p 127.0.0.1:8000:8000 -p 127.0.0.1:9292:9292 -v /var/mongodb:/data/db -v /etc/localtime:/etc/localtime:ro -v $(cd ../; pwd)/app:/srv/www/praeger praeger
