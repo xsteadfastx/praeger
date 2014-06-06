@@ -23,7 +23,11 @@
 			{% endfor %}
 		{% endif %}
 	{% endwith %}
+	{% if round['round']['start_at'] == round['round']['end_at'] %}
 	<h1>{{ round['round']['title'] }} <small>{{ round['round']['start_at'] }}</small></h1>
+	{% else %}
+	<h1>{{ round['round']['title'] }} <small>{{ round['round']['start_at'] }} - {{ round['round']['end_at'] }}</small></h1>
+	{% endif %}
 	<table class="table">
 		<thead>
 			<tr>

@@ -68,8 +68,8 @@ def get_round(round_number):
     return r.json()
 
 
-def play_at(matchday, team1, team2):
-    round = get_round(matchday)
+def play_at(round_number, team1, team2):
+    round = get_round(round_number)
     for game in round['games']:
         if game['team1_key'] == team1 and game['team2_key'] == team2:
             return create_datetime_object(game['play_at']).strftime('%Y/%m/%d')
@@ -147,7 +147,7 @@ class User(db.Document):
 class Match(db.Document):
     team1 = db.StringField(min_length=3, max_length=30, required=True)
     team2 = db.StringField(min_length=3, max_length=30, required=True)
-    matchday = db.IntField(required=True)
+    round = db.IntField(required=True)
     bets = db.ListField(db.EmbeddedDocumentField('Bet'))
 
 
@@ -275,7 +275,6 @@ def settings():
 @app.route('/loggedin', methods=['GET', 'POST'])
 @login_required
 def loggedin():
-    #today = '2014/06/22'
     matches = matchday(today)
     return render_template('loggedin.html',
                            rounds=get_rounds(),
@@ -296,7 +295,7 @@ def round(round_number):
     for game in round_data['games']:
         # db stuff
         match = Match.objects(
-            matchday=round_data['round']['pos'],
+            round=round_data['round']['pos'],
             team1=game['team1_key'],
             team2=game['team2_key']).first()
         # trying to get bets
@@ -316,18 +315,18 @@ def round(round_number):
                            round=round_data)
 
 
-@app.route('/bet/<int:matchday>-<team1>-<team2>', methods=['GET', 'POST'])
+@app.route('/bet/<int:round_number>-<team1>-<team2>', methods=['GET', 'POST'])
 @login_required
-def bet(matchday, team1, team2):
+def bet(round_number, team1, team2):
     rounds = get_rounds()
     # if the game is today redirect to login page
-    if today() == play_at(matchday, team1, team2):
-        return redirect('/round/' + str(matchday))
+    if today() == play_at(round_number, team1, team2):
+        return redirect('/round/' + str(round))
     # try to get the db object and if not set match to None
     match = Match.objects(
         team1=team1,
         team2=team2,
-        matchday=matchday).first()
+        round=round_number).first()
     # if match is there check for bets and predefine the matchform
     if match is not None:
         try:
@@ -347,7 +346,7 @@ def bet(matchday, team1, team2):
             match = Match(
                 team1=team1,
                 team2=team2,
-                matchday=matchday)
+                round=round_number)
         there_is_a_bet = False
         for bet in match.bets:
             if bet.username == current_user.get_id():
@@ -360,12 +359,12 @@ def bet(matchday, team1, team2):
                       score2=form.score2.data)
             match.bets.append(bet)
         match.save()
-        return redirect('/round/' + str(matchday))
+        return redirect('/round/' + str(round_number))
     return render_template(
         'bet.html',
         form=form,
         rounds=rounds,
-        matchday=matchday,
+        round=round,
         team1=team_key_to_title(team1),
         team2=team_key_to_title(team2))
 
@@ -378,7 +377,7 @@ def score():
     for user in users:
         user_score[user.username] = 0
     for match in matches:
-        round_data = get_round(match.matchday)
+        round_data = get_round(match.round)
         for game in round_data['games']:
             if game['team1_key'] == match.team1 and game['team2_key'] == match.team2:
                 real_score = [game['score1'], game['score2']]
