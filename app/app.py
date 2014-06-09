@@ -104,10 +104,10 @@ def score_check(real_score, bet_score):
     elif real_score.index(max(real_score)) == bet_score.index(max(bet_score)):
         # if goal difference is right return 3 points
         if abs(real_score[0]-real_score[1]) == abs(bet_score[0]-bet_score[1]):
-            return 3
+            return 4
         # if just the tendency is right return 1 point
         else:
-            return 1
+            return 3
     else:
         return 0
 
@@ -398,6 +398,13 @@ def score():
         user_score=sorted(user_score.iteritems(),
                           key=itemgetter(1),
                           reverse=True))
+
+
+@app.route('/rules')
+def rules():
+    return render_template(
+        'rules.html',
+        rounds=get_rounds())
 
 
 if __name__ == '__main__':

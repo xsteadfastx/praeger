@@ -1,0 +1,38 @@
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('.static', filename='css/style.css') }}">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link href="http://fonts.googleapis.com/css?family=Arvo:400,700" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block title %}{{ config.SITENAME }}{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+<div class="container">
+	{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			{% for category, message in messages %}
+			<div class="alert alert-{{ category }}">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>{{ message }}</strong>
+			</div>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+	<h1>Rules</h1>
+	<ul>
+		<li>Tipps können bis <strong>24 Uhr</strong> jeweils vor Spielbeginn abgegeben werden</li>
+		<li>Sobald die folgenden Runden feststehen, erscheinen sie unter "Rounds"
+	</ul>
+	<dl class="dl-horizontal">
+		<dt>Richtiges Ergebniss</dt>
+		<dd>5 Punkte</dd>
+		<dt>Richtiges Torverh&auml;ltniss</dt>
+		<dd>4 Punkte</dd>
+		<dt>Richtige Tendenz</dt>
+		<dd>3 Punkte</dd>
+</div>
+{% endblock %}
