@@ -5,14 +5,10 @@ body {
 h1 {
 	text-align: center;
 	color: #5cb85c;
-	font-size: 450%;
 }
 .jumbotron {
 	background-color: #eee;
 }
 .navbar-default .navbar-brand {
 	color: #5cb85c;
-}
-h1 small, .h1 small, h2 small, .h2 small, h3 small, .h3 small, h1 .small, .h1 .small, h2 .small, .h2 .small, h3 .small, .h3 .small {
-	    font-size: 35%;
 }
