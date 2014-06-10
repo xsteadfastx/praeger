@@ -103,7 +103,7 @@ def score_check(real_score, bet_score):
     # if tendency right
     elif real_score.index(max(real_score)) == bet_score.index(max(bet_score)):
         # if goal difference is right return 3 points
-        if abs(real_score[0]-real_score[1]) == abs(bet_score[0]-bet_score[1]):
+        if abs(real_score[0] - real_score[1]) == abs(bet_score[0] - bet_score[1]):
             return 4
         # if just the tendency is right return 1 point
         else:
@@ -304,12 +304,17 @@ def round(round_number):
                 if bet.username == current_user.get_id():
                     game['bet_score1'] = bet.score1
                     game['bet_score2'] = bet.score2
-                else:
+        except:
+            pass
+        try:
+            for bet in match.bets:
+                if 'bet_score1' not in game and 'bet_score2' not in game:
                     game['bet_score1'] = None
                     game['bet_score2'] = None
         except:
             game['bet_score1'] = None
             game['bet_score2'] = None
+
     return render_template('round.html',
                            rounds=get_rounds(),
                            round=round_data)
