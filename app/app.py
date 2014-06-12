@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, flash, url_for
+from flask import Flask, render_template, redirect, flash, url_for, session
 from flask.ext.login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask.ext.mongoengine import MongoEngine
 from flask_bootstrap import Bootstrap
@@ -214,13 +214,15 @@ def utility_processor():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = LoginForm()
+    if 'user_id' in session:
+        return redirect(url_for('loggedin'))
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
         user_obj = UserAuth(uid=username, password=password)
         user = user_obj.get_user(username)
         if user and sha256_crypt.verify(password, user.password) and user.is_active():
-            if login_user(user):
+            if login_user(user, remember=True):
                 flash('Logged in', 'success')
                 return redirect(url_for('loggedin'))
             else:
