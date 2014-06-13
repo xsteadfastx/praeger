@@ -293,7 +293,7 @@ def settings():
 @app.route('/loggedin', methods=['GET', 'POST'])
 @login_required
 def loggedin():
-    matches = matchday(today)
+    matches = matchday(today())
     return render_template('loggedin.html',
                            rounds=get_rounds(),
                            matches=matches,
