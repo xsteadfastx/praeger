@@ -95,21 +95,37 @@ def team_key_to_title(code):
     return keys_to_titles[code]
 
 
+def same_score(real_score, bet_score):
+    return real_score == bet_score
+
+
+def same_goal_difference(real_score, bet_score):
+    return real_score[0] - real_score[1] == bet_score[0] - bet_score[1]
+
+
+def right_winner(real_score, bet_score):
+    # winner 1
+    if real_score[0] < real_score[1] and bet_score[0] < bet_score[1]:
+        return True
+    # winner 2
+    if real_score[0] > real_score[1] and bet_score[0] > bet_score[1]:
+        return True
+    # No winner, or wrong winner
+    return False
+
+
 def score_check(real_score, bet_score):
     ''' checks realm score and the bet and return the points '''
-    # exact bet return 5 points
-    if real_score == bet_score:
+    if same_score(real_score, bet_score):
         return 5
-    # if tendency right
-    elif real_score.index(max(real_score)) == bet_score.index(max(bet_score)):
-        # if goal difference is right return 3 points
-        if abs(real_score[0] - real_score[1]) == abs(bet_score[0] - bet_score[1]):
-            return 4
-        # if just the tendency is right return 1 point
-        else:
-            return 3
-    else:
-        return 0
+
+    if same_goal_difference(real_score, bet_score):
+        return 4
+
+    if right_winner(real_score, bet_score):
+        return 3
+
+    return 0
 
 
 @login_manager.user_loader
