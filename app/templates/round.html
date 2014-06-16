@@ -49,10 +49,20 @@
 					<td class="text-center"><a href="/bet/{{ round['round']['pos'] }}-{{ game['team1_key'] }}-{{ game['team2_key'] }}">{{ game['bet_score1'] }} : {{ game['bet_score2'] }}</a></td>
 					{% endif %}
 				{% else %}
-					{% if game['bet_score1'] == None and game['bet_score2'] == None %}
-					<td class="text-center">no bet</td>
+				<strong>{% if game['bet_score1'] == None and game['bet_score2'] == None %}
+					<td class="text-center">
+						no bet
+						{% for user, bet in other_bets.iteritems() %}
+						<br /><small>{{ user }} {{ bet[0] }}:{{ bet[1] }}</small>
+						{% endfor %}
+					</td>
 					{% else %}
-					<td class="text-center">{{ game['bet_score1'] }} : {{ game['bet_score2'] }}</td>
+					<td class="text-center">
+						<strong>{{ game['bet_score1'] }} : {{ game['bet_score2'] }}</strong>
+						{% for user, bet in other_bets.iteritems() %}
+						<br /><small>{{ user }} {{ bet[0] }}:{{ bet[1] }}</small>
+						{% endfor %}
+					</td>
 					{% endif %}
 				{% endif %}
 				{% if game['score1'] == None and game['score1'] == None %}

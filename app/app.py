@@ -310,6 +310,7 @@ def logout():
 @login_required
 def round(round_number):
     round_data = get_round(round_number)
+    other_bets = {}
     for game in round_data['games']:
         # db stuff
         match = Match.objects(
@@ -322,6 +323,8 @@ def round(round_number):
                 if bet.username == current_user.get_id():
                     game['bet_score1'] = bet.score1
                     game['bet_score2'] = bet.score2
+                else:
+                    other_bets[bet.username] = [bet.score1, bet.score2]
         except:
             pass
         try:
@@ -335,7 +338,8 @@ def round(round_number):
 
     return render_template('round.html',
                            rounds=get_rounds(),
-                           round=round_data)
+                           round=round_data,
+                           other_bets=other_bets)
 
 
 @app.route('/bet/<int:round_number>-<team1>-<team2>', methods=['GET', 'POST'])
