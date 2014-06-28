@@ -51,7 +51,7 @@
 				{% else %}
 				<strong>{% if game['bet_score1'] == None and game['bet_score2'] == None %}
 					<td class="text-center">
-						no bet
+						<strong>no bet</strong>
 						{% for username, bet in game['other_bets'].iteritems() %}
 						<br /><small>{{ username }} {{ bet[0] }}:{{ bet[1] }}</small>
 						{% endfor %}
