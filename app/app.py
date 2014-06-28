@@ -318,6 +318,7 @@ def loggedin():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
@@ -413,6 +414,7 @@ def bet(round_number, team1, team2):
 
 
 @app.route('/team/<team_key>')
+@login_required
 def team(team_key):
     return render_template('team.html',
                            rounds=get_rounds(),
@@ -421,6 +423,7 @@ def team(team_key):
 
 
 @app.route('/score')
+@login_required
 def score():
     users = User.objects
     matches = Match.objects
@@ -452,6 +455,7 @@ def score():
 
 
 @app.route('/rules')
+@login_required
 def rules():
     return render_template(
         'rules.html',
