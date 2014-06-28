@@ -86,15 +86,11 @@ def play_at(round_number, team1, team2):
 
 
 def get_matches_for_team(team_key):
-    raw_rounds = get_rounds()['rounds']
-    rounds = []
-    for round in raw_rounds:
-        rounds.append(round['pos'])
+    data = get_football_data()
     matches = []
-    for round in rounds:
-        for game in get_round(round)['games']:
-            if game['team1_key'] == team_key or game['team2_key'] == team_key:
-                matches.append(game)
+    for game in data:
+        if game['team1_key'] == team_key or game['team2_key'] == team_key:
+            matches.append(game)
     return matches
 
 
