@@ -40,7 +40,7 @@
 		<tbody>
 		{% for game in round['games']|sort(attribute='play_at') %}
 			<tr>
-				<td class="text-left">{{ game['team1_title'] }} - {{ game['team2_title'] }}</td>
+				<td class="text-left"><a href="/team/{{ game['team1_key'] }}">{{ game['team1_title'] }}</a> - <a href="/team/{{ game['team2_key'] }}">{{ game['team2_title'] }}</a></td>
 				<td class="text-center">{{ get_time(game['play_at']) }}</td>
 				{% if get_today() < get_play_at(game['play_at']) %}
 					{% if game['bet_score1'] == None and game['bet_score2'] == None %}

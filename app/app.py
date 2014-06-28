@@ -68,6 +68,14 @@ def get_round(round_number):
     return r.json()
 
 
+def get_teams():
+    r = requests.get('http://localhost:9292/event/world.2014/teams')
+    teams = []
+    for team in r.json()['teams']:
+        teams.append(team['key'])
+    return sorted(teams)
+
+
 def play_at(round_number, team1, team2):
     round = get_round(round_number)
     for game in round['games']:
@@ -75,6 +83,19 @@ def play_at(round_number, team1, team2):
             return create_datetime_object(game['play_at']).strftime('%Y/%m/%d')
         else:
             pass
+
+
+def get_matches_for_team(team_key):
+    raw_rounds = get_rounds()['rounds']
+    rounds = []
+    for round in raw_rounds:
+        rounds.append(round['pos'])
+    matches = []
+    for round in rounds:
+        for game in get_round(round)['games']:
+            if game['team1_key'] == team_key or game['team2_key'] == team_key:
+                matches.append(game)
+    return matches
 
 
 def matchday(date):
@@ -393,6 +414,14 @@ def bet(round_number, team1, team2):
         round=round,
         team1=team_key_to_title(team1),
         team2=team_key_to_title(team2))
+
+
+@app.route('/team/<team_key>')
+def team(team_key):
+    return render_template('team.html',
+                           rounds=get_rounds(),
+                           teamname=team_key_to_title(team_key),
+                           matches=get_matches_for_team(team_key))
 
 
 @app.route('/score')
