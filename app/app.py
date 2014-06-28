@@ -37,7 +37,7 @@ def create_datetime_object(date):
 
 
 def get_football_data():
-    r = requests.get('http://localhost:9292/event/world.2014/rounds')
+    r = requests.get(API_BASE_URL + '/event/world.2014/rounds')
     rounds = r.json()
     positions = []
     for item in rounds['rounds']:
@@ -45,7 +45,7 @@ def get_football_data():
     matches = []
     for position in positions:
         r = requests.get(
-            'http://localhost:9292/event/world.2014/round/%i' %
+            API_BASE_URL + '/event/world.2014/round/%i' %
             position)
         for match in r.json()['games']:
             matches.append(match)
@@ -56,20 +56,20 @@ def get_football_data():
 def get_rounds():
     ''' getting a json with a rounds overview '''
     r = requests.get(
-        'http://localhost:9292/event/world.2014/rounds')
+        API_BASE_URL + '/event/world.2014/rounds')
     return r.json()
 
 
 def get_round(round_number):
     ''' getting a specific round json '''
     r = requests.get(
-        'http://localhost:9292/event/world.2014/round/%i' %
+        API_BASE_URL + '/event/world.2014/round/%i' %
         round_number)
     return r.json()
 
 
 def get_teams():
-    r = requests.get('http://localhost:9292/event/world.2014/teams')
+    r = requests.get(API_BASE_URL + '/event/world.2014/teams')
     teams = []
     for team in r.json()['teams']:
         teams.append(team['key'])
